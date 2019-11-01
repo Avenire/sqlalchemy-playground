@@ -1,4 +1,5 @@
 import os
+import functools
 import uuid
 from contextlib import contextmanager
 
@@ -49,3 +50,14 @@ def session_factory(database, engine_factory):
     Base.metadata.create_all(engine)
     yield session_factory
     engine.dispose()
+
+
+def composer(ctx_manager_func):
+    def decorator(_):
+        @functools.wraps(_)
+        def reusable_body(**kwargs):
+            fixtures = list(kwargs.values())
+            with ctx_manager_func(*fixtures) as _:
+                yield _
+        return reusable_body
+    return decorator

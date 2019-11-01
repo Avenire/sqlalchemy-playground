@@ -1,24 +1,22 @@
 import pytest
 
 from tests import setup
+from tests.setup import composer
 
 
 @pytest.fixture(scope='session')
-def engine():
-    with setup.engine_factory() as _:
-        yield _
+@composer(setup.engine_factory)
+def engine(): pass
 
 
 @pytest.fixture(scope='session')
-def database(engine):
-    with setup.database_factory(engine) as _:
-        yield _
+@composer(setup.database_factory)
+def database(engine): pass
 
 
 @pytest.fixture(scope='session')
-def session_factory(database, engine):
-    with setup.session_factory(database, engine) as _:
-        yield _
+@composer(setup.session_factory)
+def session_factory(database, engine): pass
 
 
 @pytest.fixture
