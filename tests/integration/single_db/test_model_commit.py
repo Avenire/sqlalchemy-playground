@@ -41,5 +41,3 @@ def test_large_data(parent_cls, setup_data, session):
         parent_cls.parent_id == parent.parent_id
     ).one()
     assert parent.total_something == parent.num_children == expected_stats
-
-
